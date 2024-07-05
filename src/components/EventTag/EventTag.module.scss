@@ -1,0 +1,56 @@
+@import "../../styles/colors";
+
+.tag {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  cursor: pointer;
+
+  border: none;
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+.marker {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+
+  > svg {
+    display: inline-block;
+    margin-right: 4px;
+  }
+}
+
+.content {
+  font-family: TT-Commons, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.past {
+  background-color: $light_gray;
+  color: $gray;
+}
+
+.future {
+  background-color: $light_gray;
+  color: $black;
+}
+
+.accede {
+  background-color: $light_gray;
+  color: $black;
+}
+
+.created {
+  background-color: $red;
+  color: $white;
+}
