@@ -1,14 +1,23 @@
 @font-face {
-  font-family: TT-Commons;
-  src: url("/src/assets/fonts/TTCommons-Regular.woff") format("woff");
+  font-family: 'TTCommons';
+  src: url('/src/assets/fonts/TTCommons-Regular.woff2') format('woff2'),
+  url('/src/assets/fonts/TTCommons-Regular.woff') format('woff');
   font-weight: normal;
+  font-style: normal;
 }
+
 @font-face {
   font-family: TT-Commons;
-  src: url("/src/assets/fonts/TTCommons-Medium.woff") format("woff");
+  src: url('/src/assets/fonts/TTCommons-Medium.woff2') format('woff2'),
+  url('/src/assets/fonts/TTCommons-Medium.woff') format('woff');
   font-weight: 500;
+  font-style: normal;
 }
+
 @font-face {
-  font-family: Redcollar;
-  src: url("/src/assets/fonts/Redcollar.woff2") format("woff");
+  font-family: RedCollar;
+  src: url('/src/assets/fonts/Redcollar.woff2') format('woff2'),
+  url('/src/assets/fonts/Redcollar.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
