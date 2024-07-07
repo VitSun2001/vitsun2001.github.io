@@ -1,0 +1,43 @@
+@import "../../styles/colors";
+
+.day {
+  padding: 12px 12px 0 32px;
+
+  &.weekend{
+    background-color: $lightest_gray;
+  }
+
+  color: $gray;
+  &.currentMonth{
+    color: $black;
+  }
+}
+
+.date {
+  margin: 0 0 2px;
+  padding: 0;
+
+  font-family: TT-Commons, sans-serif;
+  font-size: 1.25rem;
+  line-height: 140%;
+  font-weight: 500;
+  text-align: right;
+  letter-spacing: -0.02em;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+
+  > * {
+    max-width: calc(100% - 12px);
+  }
+
+  > :not(:last-child) {
+    margin-bottom: 4px;
+  }
+
+  > :last-child{
+    margin-bottom: 20px;
+  }
+}

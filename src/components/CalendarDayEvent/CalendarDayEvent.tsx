@@ -1,4 +1,4 @@
-import styles from './EventTag.module.scss'
+import styles from './CalendarDayEvent.module.scss'
 
 interface EventTagProps {
     label: string,
@@ -6,7 +6,7 @@ interface EventTagProps {
     onClick?: () => void
 }
 
-export function EventTag({label, type, onClick}: EventTagProps) {
+export function CalendarDayEvent({label, type, onClick}: EventTagProps) {
     const typeStyle = (() => {
         switch (type) {
             case "past":

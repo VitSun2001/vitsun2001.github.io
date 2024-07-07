@@ -1,0 +1,31 @@
+@import "../../styles/colors";
+
+.controls{
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+
+  flex-shrink: 0;
+}
+
+.month {
+  margin: 0;
+  padding: 8px 24px;
+  flex-shrink: 0;
+
+  font-family: Redcollar, fantasy;
+  font-size: 1.625rem;
+  line-height: 120%;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  color: $black;
+}
+
+button{
+  margin: 0;
+  padding: 8px 16px;
+  background-color: $light_gray;
+  border-radius: 8px;
+  border: none;
+}
