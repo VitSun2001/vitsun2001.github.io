@@ -13,6 +13,7 @@ body {
     min-height: 0;
   }
   > :nth-child(2){
+    min-height: calc(100vh - 16.1875rem);
     flex-grow: 1;
   }
 }
