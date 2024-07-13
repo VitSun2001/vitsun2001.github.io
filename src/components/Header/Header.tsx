@@ -1,7 +1,7 @@
 import styles from "./Header.module.scss"
-import {Button} from "../Button/Button.tsx";
 import {HeaderControlsMonthSelector} from "../HeaderControlsMonthSelector/HeaderControlsMonthSelector.tsx";
 import {HeaderLogo} from "../HeaderLogo/HeaderLogo.tsx";
+import {HeaderControlsUser} from "../HeaderControlsUser/HeaderControlsUser.tsx";
 
 export function Header() {
     return (
@@ -9,7 +9,7 @@ export function Header() {
             <HeaderLogo/>
             <div className={styles.menu}>
                 <HeaderControlsMonthSelector/>
-                <Button label={"Войти"} color={"black"}></Button>
+                <HeaderControlsUser/>
             </div>
         </div>
     )
