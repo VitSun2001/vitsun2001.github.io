@@ -1,23 +1,25 @@
 import './App.scss'
 import {Header} from "./components/Header/Header.tsx";
-import DateProvider from "./contexts/DateContext.tsx";
 import {Calendar} from "./components/Calendar/Calendar.tsx";
 import AuthProvider from "./contexts/AuthContext.tsx";
 import ModalErrorProvider from "./contexts/ModalErrorContext.tsx";
+import CalendarContext from "./contexts/CalendarContext.tsx";
+import useCalendar from "./hooks/useCalendar.tsx";
 
 function App() {
+    const calendar = useCalendar()
 
     return (
         <AuthProvider>
             <ModalErrorProvider>
-                <DateProvider>
+                <CalendarContext.Provider value={calendar}>
                     <header id={"header"}>
                         <Header/>
                     </header>
                     <main id={"main"}>
                         <Calendar/>
                     </main>
-                </DateProvider>
+                </CalendarContext.Provider>
             </ModalErrorProvider>
         </AuthProvider>
     )

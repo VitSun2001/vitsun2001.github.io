@@ -3,38 +3,21 @@ import {CalendarWeekday} from "../CalendarWeekday/CalendarWeekday.tsx";
 import {CalendarDay} from "../CalendarDay/CalendarDay.tsx";
 import {useContext, useEffect, useState} from "react";
 import qs from "qs";
-import {DateContext, DateContextType} from "../../contexts/DateContext.tsx";
 import axiosInstance from "../../api/axios.ts";
+import {weekDayNames} from "../../constants/dateTime.ts";
+import CalendarContext, {CalendarContextType} from "../../contexts/CalendarContext.tsx";
 
 export function Calendar() {
-    const weekDays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"]
-    const dateContext = useContext(DateContext) as DateContextType
+    const calendar = useContext(CalendarContext) as CalendarContextType
 
-    const [days, setDays] = useState<Array<Date>>([]);
     const [error, setError] = useState(null);
     const [events, setEvents] = useState<Array<any>>([]);
 
-    useEffect(() => {
-        const dates: Array<Date> = []
-        const firstDay = new Date(dateContext.selectedYear, dateContext.selectedMonth)
-        for (let i = (firstDay.getDay() + 6) % 7; i > 0; i--) {
-            const dateToPrepend = new Date(firstDay)
-            dateToPrepend.setDate(dateToPrepend.getDate() - i)
-            dates.push(dateToPrepend)
-        }
-        const amountOfDatesToAdd = 42 - dates.length
-        for (let i = 0; i < amountOfDatesToAdd; i++) {
-            const dateToAdd = new Date(firstDay)
-            dateToAdd.setDate(dateToAdd.getDate() + i)
-            dates.push(dateToAdd)
-        }
-        setDays(dates)
-    }, [dateContext.selectedMonth, dateContext.selectedYear])
 
     useEffect(() => {
-        if (days.length == 0) return
-        const pastLimit = days[0]
-        const futureLimit = days[days.length - 1]
+        if (calendar.days.length == 0) return
+        const pastLimit = calendar.days[0]
+        const futureLimit = calendar.days[calendar.days.length - 1]
         futureLimit.setDate(futureLimit.getDate() + 1)
 
         const query = qs.stringify({
@@ -80,10 +63,10 @@ export function Calendar() {
                 setEvents(response.data.data)
             })
             .catch((error) => setError(error))
-    }, [days])
+    }, [calendar])
 
-    const weekDaysComponents = weekDays.map(day => <CalendarWeekday day={day}/>)
-    const daysComponents = days.map(
+    const weekDaysComponents = weekDayNames.map(day => <CalendarWeekday day={day}/>)
+    const daysComponents = calendar.days.map(
         (day, index) => {
             return <CalendarDay
                 day={day}
@@ -96,14 +79,16 @@ export function Calendar() {
                         return Date.parse(x.dateStart) <= end.getTime() && Date.parse(x.dateEnd) >= start.getTime()
                     })}
                 weekend={index % 7 - 6 == 0 || index % 7 - 5 == 0}
-                currentMonth={day.getMonth() == dateContext.selectedMonth}
+                currentMonth={day.getMonth() == calendar.selectedMonth}
             />
         })
 
     return (
-        <div className={styles.calendar}>
-            {weekDaysComponents}
-            {daysComponents}
-        </div>
+        <CalendarContext.Provider value={calendar}>
+            <div className={styles.calendar}>
+                {weekDaysComponents}
+                {daysComponents}
+            </div>
+        </CalendarContext.Provider>
     )
 }
