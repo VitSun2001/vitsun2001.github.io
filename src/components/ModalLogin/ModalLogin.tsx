@@ -10,6 +10,7 @@ import {AuthContext, AuthContextType} from "../../contexts/AuthContext.tsx";
 import {IconCross} from "../Icons/IconCross.tsx";
 import {IconEyeOpen} from "../Icons/IconEyeOpen.tsx";
 import {IconEyeClosed} from "../Icons/IconEyeClosed.tsx";
+import {ModalErrorContext, ModalErrorContextType} from "../../contexts/ModalErrorContext.tsx";
 
 interface ModalLoginProps {
     open: boolean,
@@ -19,13 +20,24 @@ interface ModalLoginProps {
 
 export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
     const authContext = useContext(AuthContext) as AuthContextType
+    const modalErrorContext = useContext(ModalErrorContext) as ModalErrorContextType
+
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState(false)
     const [userExists, setUserExists] = useState(false)
     const [password, setPassword] = useState('')
     const [passwordVisible, setPasswordVisible] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
-    const [serverError, setServerError] = useState(false)
+
+    const handleClose = () => {
+        setEmail("")
+        setEmailError(false)
+        setUserExists(false)
+        setPassword("")
+        setPasswordVisible(false)
+        setPasswordError(false)
+        onClose()
+    }
 
     const handleEmailChange = (value: string) => {
         setEmail(value)
@@ -49,7 +61,6 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
 
         const request = `api/users?${query}`
 
-        setServerError(false);
         axiosInstance.get(request)
             .then((response) => {
                 console.log(response)
@@ -57,12 +68,14 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
                     setUserExists(true)
                 else {
                     onSignUp(email)
+                    handleClose()
                 }
             })
             .catch((error) => {
                 if (isAxiosError(error)) {
                     if (error.code?.charAt(0) == "5") {
-                        setServerError(true)
+                        handleClose()
+                        modalErrorContext.open()
                     }
                 }
             })
@@ -75,11 +88,12 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
 
     const handleSignIn = () => {
         authContext.login(email, password).then(() => {
-            onClose()
+            handleClose()
         }).catch((error) => {
             if (isAxiosError(error)) {
                 if (error.code?.charAt(0) == "5") {
-                    setServerError(true)
+                    handleClose()
+                    modalErrorContext.open()
                 }
             } else {
                 setPasswordError(true)
@@ -88,7 +102,7 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
     }
 
     return (
-        <Modal label={"Вход"} open={open} onClose={onClose}>
+        <Modal label={"Вход"} open={open} onClose={handleClose}>
             <div className={styles.container}>
                 {!userExists ? (<>
                     <Input
@@ -96,7 +110,7 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
                         type={"email"}
                         label={"E-mail"}
                         name={"E-mail"}
-                        error={emailError || serverError}
+                        error={emailError}
                         placeholder={""}
                         onChange={handleEmailChange}
                         errorMessage={emailError ? "Некорректный e-mail" : "Что-то пошло не так, попробуйте позже"}
@@ -111,7 +125,7 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
                             type={passwordVisible ? "text" : "password"}
                             label={"Пароль"}
                             name={"Пароль"}
-                            error={passwordError || serverError}
+                            error={passwordError}
                             placeholder={""}
                             onChange={handlePasswordChange}
                             errorMessage={passwordError ? "Неверный пароль" : "Что-то пошло не так, попробуйте позже"}

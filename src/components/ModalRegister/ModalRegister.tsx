@@ -9,6 +9,7 @@ import {isAxiosError} from "axios";
 import {IconEyeOpen} from "../Icons/IconEyeOpen.tsx";
 import {IconEyeClosed} from "../Icons/IconEyeClosed.tsx";
 import {ModalRegisterHint} from "../ModalRegisterHint/ModalRegisterHint.tsx";
+import {ModalErrorContext, ModalErrorContextType} from "../../contexts/ModalErrorContext.tsx";
 
 export interface ModalRegisterProps {
     open: boolean,
@@ -18,6 +19,8 @@ export interface ModalRegisterProps {
 
 export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
     const authContext = useContext(AuthContext) as AuthContextType
+    const modalErrorContext = useContext(ModalErrorContext) as ModalErrorContextType
+
     const [name, setName] = useState('')
     const [nameError, setNameError] = useState(false)
     const [password, setPassword] = useState('')
@@ -25,7 +28,6 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
     const [repeatPassword, setRepeatPassword] = useState('')
     const [repeatPasswordError, setRepeatPasswordError] = useState(false)
     const [passwordVisible, setPasswordVisible] = useState(false)
-    const [serverError, setServerError] = useState(false)
 
     const handleNameChange = (value: string) => {
         setName(value)
@@ -58,15 +60,17 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
             password: password
         }).then(() => {
             authContext.login(email, password).then(() => {
-                onClose()
+                handleClose()
             }).catch(error => {
                 if (isAxiosError(error)) {
-                    setServerError(true)
+                    handleClose()
+                    modalErrorContext.open()
                 }
             })
         }).catch(error => {
             if (isAxiosError(error)) {
-                setServerError(true)
+                handleClose()
+                modalErrorContext.open()
             }
         })
     }
@@ -79,7 +83,6 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
         setRepeatPassword("")
         setRepeatPasswordError(false)
         setPasswordVisible(false)
-        setServerError(false)
         onClose()
     }
 
@@ -93,7 +96,7 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
                         type={"text"}
                         label={"Ваше имя"}
                         name={"name"}
-                        error={nameError || serverError}
+                        error={nameError}
                         placeholder={""}
                         onChange={handleNameChange}
                         errorMessage={nameError ? "Обязательное поле" : "Что-то пошло не так, попробуйте позже"}
@@ -103,7 +106,7 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
                         type={passwordVisible ? "text" : "password"}
                         label={"Пароль"}
                         name={"password"}
-                        error={passwordError || serverError}
+                        error={passwordError}
                         placeholder={""}
                         onChange={handlePasswordChange}
                         errorMessage={passwordError ? "Используйте латинские буквы, цифры и спец символы" : "Что-то пошло не так, попробуйте позже"}
@@ -115,7 +118,7 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
                         type={passwordVisible ? "text" : "password"}
                         label={"Повторить пароль"}
                         name={"passwordRepeat"}
-                        error={repeatPasswordError || serverError}
+                        error={repeatPasswordError}
                         placeholder={""}
                         onChange={handleRepeatPasswordChange}
                         errorMessage={repeatPasswordError ? "Пароли не совпадают" : "Что-то пошло не так, попробуйте позже"}
