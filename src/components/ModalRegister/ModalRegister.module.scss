@@ -1,0 +1,21 @@
+@import "../../styles/colors";
+
+.container {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 32rem;
+
+  > :first-child{
+    margin-bottom: -1rem;
+  }
+
+  > .form{
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    max-width: 21.265rem;
+    margin: auto;
+  }
+}
