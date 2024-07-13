@@ -118,7 +118,7 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
                         onAddonClick={() => handleEmailChange("")}
                         addonOnFocus
                     />
-                    <Button label={"Далее"} color={"black"} onClick={handleNext}/>
+                    <Button color={"black"} onClick={handleNext}>Далее</Button>
                 </>) : (<>
                         <Input
                             value={password}
@@ -132,7 +132,7 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
                             addon={passwordVisible ? <IconEyeOpen size={"1.75rem"}/> : <IconEyeClosed size={"1.75rem"}/>}
                             onAddonClick={()=> setPasswordVisible(!passwordVisible)}
                         />
-                        <Button label={"Войти"} color={"black"} onClick={handleSignIn}></Button>
+                        <Button color={"black"} onClick={handleSignIn}>Войти</Button>
                     </>
                 )}
             </div>

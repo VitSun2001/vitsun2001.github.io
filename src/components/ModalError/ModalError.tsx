@@ -15,7 +15,7 @@ export function ModalError({open, onClose}: ModalErrorProps) {
                     <h2 className={styles.title}>Что-то пошло не так</h2>
                     <h4 className={styles.subtitle}>Попробуйте позже</h4>
                 </div>
-                <Button label={"Хорошо"} color={"black"} onClick={onClose}></Button>
+                <Button color={"black"} onClick={onClose}>Хорошо</Button>
             </div>
         </Modal>
     );

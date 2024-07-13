@@ -1,14 +1,15 @@
 import styles from './Button.module.scss'
+import {ReactNode} from "react";
 
 interface ButtonProps {
-    label: string,
     color: "red" | "black",
     onClick?: () => void,
     secondary?: boolean,
     disabled?: boolean
+    children: ReactNode | ReactNode[]
 }
 
-export function Button({label, color, onClick, secondary, disabled}: ButtonProps) {
+export function Button({color, onClick, secondary, disabled, children}: ButtonProps) {
     const colorStyle = (() => {
         switch (color) {
             case "red":
@@ -25,7 +26,7 @@ export function Button({label, color, onClick, secondary, disabled}: ButtonProps
             className={`${styles.button} ${colorStyle} ${secondaryStyle} ${disabledStyle}`}
             onClick={onClick}
         >
-            {label}
+            {children}
         </button>
     )
 }

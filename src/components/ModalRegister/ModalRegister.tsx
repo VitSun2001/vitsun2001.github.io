@@ -125,7 +125,7 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
                         addon={passwordVisible ? <IconEyeOpen size={"1.75rem"}/> : <IconEyeClosed size={"1.75rem"}/>}
                         onAddonClick={()=> setPasswordVisible(!passwordVisible)}
                     />
-                    <Button label={"Зарегистрироваться"} color={"black"} onClick={handleSignIn}></Button>
+                    <Button color={"black"} onClick={handleSignIn}>Зарегистрироваться</Button>
                 </div>
             </div>
         </Modal>
