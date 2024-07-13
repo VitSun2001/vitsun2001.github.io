@@ -14,7 +14,9 @@ function App() {
                     <header id={"header"}>
                         <Header/>
                     </header>
-                    <Calendar/>
+                    <main id={"main"}>
+                        <Calendar/>
+                    </main>
                 </DateProvider>
             </ModalErrorProvider>
         </AuthProvider>
