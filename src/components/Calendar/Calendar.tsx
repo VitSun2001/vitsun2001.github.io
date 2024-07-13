@@ -2,9 +2,9 @@ import styles from "./Calendar.module.scss"
 import {CalendarWeekday} from "../CalendarWeekday/CalendarWeekday.tsx";
 import {CalendarDay} from "../CalendarDay/CalendarDay.tsx";
 import {useContext, useEffect, useState} from "react";
-import axios from "axios";
 import qs from "qs";
 import {DateContext, DateContextType} from "../../contexts/DateContext.tsx";
+import axiosInstance from "../../api/axios.ts";
 
 export function Calendar() {
     const weekDays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"]
@@ -72,12 +72,9 @@ export function Calendar() {
             }
         })
 
-        console.log(pastLimit)
-        console.log(futureLimit)
-        const request = `https://planner.rdclr.ru/api/events?${query}`
-        console.log(request)
+        const request = `api/events?${query}`
 
-        axios.get(request)
+        axiosInstance.get(request)
             .then((response) => {
                 console.log(response.data.data)
                 setEvents(response.data.data)
