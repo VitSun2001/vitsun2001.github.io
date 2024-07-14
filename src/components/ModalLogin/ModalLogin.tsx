@@ -90,6 +90,7 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
         authContext.login(email, password).then(() => {
             handleClose()
         }).catch((error) => {
+            //Сейчас бэк возвращает 5xx ошибку даже в случае неверного пароля, хотя должен возвращать 4xx
             if (isAxiosError(error)) {
                 if (error.code?.charAt(0) == "5") {
                     handleClose()
