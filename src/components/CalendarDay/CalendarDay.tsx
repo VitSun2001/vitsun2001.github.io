@@ -12,7 +12,10 @@ export function CalendarDay({day, events, currentMonth, weekend}: CalendarGridWe
     const currentMonthStyle = currentMonth ? styles.currentMonth : "";
     const weekendStyle = weekend ? styles.weekend : "";
 
-    const eventComponents = events.map(x=> <CalendarDayEvent label={x.title} type={Date.now() > Date.parse(x.dateEnd) ? "past" : "future"}/>)
+    const eventComponents = events.map(x=> <CalendarDayEvent
+        label={x.title}
+        type={Date.now() > Date.parse(x.dateEnd) ? "past" : x.owner ? "created" : x.participants.length > 0 ? "accede" : "future"}
+    />)
 
     return (
         <div className={`${styles.day} ${weekendStyle} ${currentMonthStyle}`}>

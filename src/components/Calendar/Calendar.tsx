@@ -6,64 +6,95 @@ import qs from "qs";
 import axiosInstance from "../../api/axios.ts";
 import {weekDayNames} from "../../constants/dateTime.ts";
 import CalendarContext, {CalendarContextType} from "../../contexts/CalendarContext.tsx";
+import {AuthContext, AuthContextType} from "../../contexts/AuthContext.tsx";
 
 export function Calendar() {
+    const authContext = useContext(AuthContext) as AuthContextType
     const calendar = useContext(CalendarContext) as CalendarContextType
 
     const [error, setError] = useState(null);
     const [events, setEvents] = useState<Array<any>>([]);
 
-
     useEffect(() => {
-        if (calendar.days.length == 0) return
-        const pastLimit = calendar.days[0]
-        const futureLimit = calendar.days[calendar.days.length - 1]
-        futureLimit.setDate(futureLimit.getDate() + 1)
+        const loadEvents = (page: number, loadedEvents: Array<any> = []) => {
+            const pastLimit = calendar.days[0]
+            const futureLimit = calendar.days[calendar.days.length - 1]
+            futureLimit.setDate(futureLimit.getDate() + 1)
 
-        const query = qs.stringify({
-            filters: {
-                $or: [
-                    {
-                        $and: [
-                            {
-                                dateEnd: {
-                                    $gte: pastLimit
+            const query = qs.stringify({
+                filters: {
+                    $or: [
+                        {
+                            $and: [
+                                {
+                                    dateEnd: {
+                                        $gte: pastLimit
+                                    }
+                                },
+                                {
+                                    dateEnd: {
+                                        $lt: futureLimit
+                                    }
                                 }
-                            },
-                            {
-                                dateEnd: {
-                                    $lt: futureLimit
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    dateStart: {
+                                        $gte: pastLimit
+                                    }
+                                },
+                                {
+                                    dateStart: {
+                                        $lt: futureLimit
+                                    }
                                 }
+                            ]
+                        }
+                    ]
+                },
+                populate: {
+                    owner: {
+                        fields: ["id"],
+                        filters: {
+                            id: {
+                                $eq: authContext.user?.id ? authContext.user.id : "0"
                             }
-                        ]
+                        }
                     },
-                    {
-                        $and: [
-                            {
-                                dateStart: {
-                                    $gte: pastLimit
-                                }
-                            },
-                            {
-                                dateStart: {
-                                    $lt: futureLimit
-                                }
+                    participants: {
+                        fields: ["id"],
+                        filters: {
+                            id: {
+                                $eq: authContext.user?.id ? authContext.user.id : "0"
                             }
-                        ]
+                        }
                     }
-                ]
-            }
-        })
-
-        const request = `api/events?${query}`
-
-        axiosInstance.get(request)
-            .then((response) => {
-                console.log(response.data.data)
-                setEvents(response.data.data)
+                },
+                pagination: {
+                    page: page,
+                    pageSize: 100,
+                },
             })
-            .catch((error) => setError(error))
-    }, [calendar])
+
+            const request = `api/events?${query}`
+
+            axiosInstance.get(request)
+                .then((response) => {
+                    loadedEvents.push(...response.data.data)
+                    if (response.data.meta.pagination.page < response.data.meta.pagination.pageCount)
+                        loadEvents(page + 1, loadedEvents)
+                    else {
+                        setEvents(loadedEvents)
+                    }
+                })
+                .catch((error) => setError(error))
+        }
+
+        if (calendar.days.length == 0) return
+        loadEvents(1)
+    }, [authContext.user, calendar])
 
     const weekDaysComponents = weekDayNames.map(day => <CalendarWeekday day={day}/>)
     const daysComponents = calendar.days.map(
