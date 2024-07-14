@@ -28,16 +28,11 @@
 .events {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
 
   > * {
     max-width: calc(100% - 12px);
   }
 
-  > :not(:last-child) {
-    margin-bottom: 4px;
-  }
-
-  > :last-child{
-    margin-bottom: 20px;
-  }
+  margin-bottom: 1.25rem;
 }
