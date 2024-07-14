@@ -102,12 +102,13 @@ export function Calendar() {
             return <CalendarDay
                 day={day}
                 events={
-                    events.filter(x => {
-                        const start = new Date(day)
-                        start.setHours(0, 0, 0, 0)
-                        const end = new Date(day)
-                        end.setHours(23, 59, 59, 999)
-                        return Date.parse(x.dateStart) <= end.getTime() && Date.parse(x.dateEnd) >= start.getTime()
+                    events.filter(event => {
+                        const dayStart = new Date(day)
+                        dayStart.setHours(0, 0, 0, 0)
+                        const dayEnd = new Date(day)
+                        dayEnd.setHours(23, 59, 59, 999)
+                        return (Date.parse(event.dateStart) >= dayStart.getTime() && Date.parse(event.dateStart) <= dayEnd.getTime())
+                            || Date.parse(event.dateStart) <= dayEnd.getTime() && Date.parse(event.dateEnd) >= dayStart.getTime()
                     })}
                 weekend={index % 7 - 6 == 0 || index % 7 - 5 == 0}
                 currentMonth={day.getMonth() == calendar.selectedMonth}
