@@ -7,18 +7,22 @@ import axiosInstance from "../../api/axios.ts";
 import {weekDayNames} from "../../constants/dateTime.ts";
 import CalendarContext, {CalendarContextType} from "../../contexts/CalendarContext.tsx";
 import {AuthContext, AuthContextType} from "../../contexts/AuthContext.tsx";
+import {EventInfo} from "../EventInfo/EventInfo.tsx";
+import {ModalErrorContext, ModalErrorContextType} from "../../contexts/ModalErrorContext.tsx";
 
 export function Calendar() {
     const authContext = useContext(AuthContext) as AuthContextType
+    const errorContext = useContext(ModalErrorContext) as ModalErrorContextType
     const calendar = useContext(CalendarContext) as CalendarContextType
 
-    const [error, setError] = useState(null);
     const [events, setEvents] = useState<Array<any>>([]);
+    const [selectedEvent, setSelectedEvent] = useState<any>(null)
+    const [isEventInfoOpen, setIsEventInfoOpen] = useState(false)
 
     useEffect(() => {
         const loadEvents = (page: number, loadedEvents: Array<any> = []) => {
-            const pastLimit = calendar.days[0]
-            const futureLimit = calendar.days[calendar.days.length - 1]
+            const pastLimit = new Date(calendar.days[0])
+            const futureLimit = new Date(calendar.days[calendar.days.length - 1])
             futureLimit.setDate(futureLimit.getDate() + 1)
 
             const query = qs.stringify({
@@ -78,7 +82,7 @@ export function Calendar() {
                 },
             })
 
-            const request = `api/events?${query}`
+            const request = `/api/events?${query}`
 
             axiosInstance.get(request)
                 .then((response) => {
@@ -89,12 +93,12 @@ export function Calendar() {
                         setEvents(loadedEvents)
                     }
                 })
-                .catch((error) => setError(error))
+                .catch(() => errorContext.open())
         }
 
         if (calendar.days.length == 0) return
         loadEvents(1)
-    }, [authContext.user, calendar])
+    }, [authContext.user, calendar, isEventInfoOpen])
 
     const weekDaysComponents = weekDayNames.map(day => <CalendarWeekday day={day}/>)
     const daysComponents = calendar.days.map(
@@ -112,6 +116,7 @@ export function Calendar() {
                     })}
                 weekend={index % 7 - 6 == 0 || index % 7 - 5 == 0}
                 currentMonth={day.getMonth() == calendar.selectedMonth}
+                onClick={(event) => {setSelectedEvent(event); setIsEventInfoOpen(true);}}
             />
         })
 
@@ -121,6 +126,7 @@ export function Calendar() {
                 {weekDaysComponents}
                 {daysComponents}
             </div>
+            <EventInfo eventId={selectedEvent?.id} open={isEventInfoOpen} onClose={() => {setIsEventInfoOpen(false)}}></EventInfo>
         </CalendarContext.Provider>
     )
 }

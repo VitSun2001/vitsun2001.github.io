@@ -1,0 +1,25 @@
+@import "../../styles/colors";
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selectedMonth {
+  margin: 0;
+
+  font-family: Redcollar, fantasy;
+  font-size: 1.125rem;
+  line-height: 100%;
+  text-align: center;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+
+  color: $black;
+}
+
+.arrow {
+  background: none;
+  margin: 0;
+}

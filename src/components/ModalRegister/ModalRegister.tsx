@@ -54,7 +54,7 @@ export function ModalRegister({open, email, onClose}: ModalRegisterProps) {
 
         if (nameError || passwordError || repeatPasswordError) return
 
-        axiosInstance.post("api/auth/local/register", {
+        axiosInstance.post("/api/auth/local/register", {
             username: name,
             email: email,
             password: password

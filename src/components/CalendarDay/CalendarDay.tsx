@@ -1,20 +1,22 @@
 import styles from "./CalendarDay.module.scss"
 import {CalendarDayEvent} from "../CalendarDayEvent/CalendarDayEvent.tsx";
 
-interface CalendarGridWeekdayProps {
+interface CalendarDayProps {
     day: Date
     events: Array<any>,
     currentMonth?: boolean,
-    weekend?: boolean
+    weekend?: boolean,
+    onClick: (event: any) => void
 }
 
-export function CalendarDay({day, events, currentMonth, weekend}: CalendarGridWeekdayProps) {
+export function CalendarDay({day, events, currentMonth, weekend, onClick}: CalendarDayProps) {
     const currentMonthStyle = currentMonth ? styles.currentMonth : "";
     const weekendStyle = weekend ? styles.weekend : "";
 
     const eventComponents = events.map(x=> <CalendarDayEvent
         label={x.title}
-        type={Date.now() > Date.parse(x.dateEnd) ? "past" : x.owner ? "created" : x.participants.length > 0 ? "accede" : "future"}
+        type={(Date.parse(x.dateStart) < new Date().getTime() && !x.dateEnd) || (x.dateEnd && Date.parse(x.dateEnd) < new Date().getTime()) ? "past" : x.owner ? "created" : x.participants.length > 0 ? "accede" : "future"}
+        onClick={()=>{onClick(x);}}
     />)
 
     return (

@@ -5,7 +5,7 @@ export type CalendarContextType = {
     selectedMonth: number,
     selectedYear: number,
     incrementMonth: () => void,
-    decrementMonth: () => void
+    decrementMonth: () => void,
 }
 
 const CalendarContext = createContext<CalendarContextType | null>(null);

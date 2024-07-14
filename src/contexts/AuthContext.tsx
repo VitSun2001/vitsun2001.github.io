@@ -1,7 +1,7 @@
 import {createContext, FC, ReactNode, useState} from "react";
-import axiosInstance from "../api/axios.ts";
 import {ModalLogin} from "../components/ModalLogin/ModalLogin.tsx";
 import {ModalRegister} from "../components/ModalRegister/ModalRegister.tsx";
+import axios from "axios";
 
 export type User = {
     id: number,
@@ -47,13 +47,13 @@ const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
 
     const login = async (email: string, password: string) => {
         try {
-            const response = await axiosInstance.post("api/auth/local", {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/local`, {
                 identifier: email,
                 password: password
             })
             setUser(response.data.user)
-            setToken(response.data.token)
-            localStorage.setItem("jwt", token);
+            setToken(response.data.jwt)
+            localStorage.setItem("jwt", response.data.jwt);
             return true
         } catch (e) {
             return false

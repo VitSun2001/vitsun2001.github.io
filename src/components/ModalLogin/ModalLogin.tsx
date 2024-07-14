@@ -63,7 +63,6 @@ export function ModalLogin({open, onClose, onSignUp}: ModalLoginProps) {
 
         axiosInstance.get(request)
             .then((response) => {
-                console.log(response)
                 if (response.data.length > 0)
                     setUserExists(true)
                 else {

@@ -1,12 +1,13 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:1337/",
+    baseURL: import.meta.env.VITE_API_BASE_URL,
 })
 
 axiosInstance.interceptors.request.use((config) =>{
-    if(localStorage.getItem("jwt"))
-        config.headers["Authorization"] = localStorage.getItem("jwt")
+    if(localStorage.getItem("jwt")){
+        config.headers.Authorization = `Bearer ${localStorage.getItem("jwt")}`
+    }
     config.headers["Content-Type"] = "application/json"
     return config
 })

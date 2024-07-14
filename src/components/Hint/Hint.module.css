@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #FAFAFA;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font-family: TT-Commons, fantasy;
+  font-size: 0.875rem;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  color: #0D0C0C;
+}
+
+.iconWrapper {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*# sourceMappingURL=Hint.module.css.map */
