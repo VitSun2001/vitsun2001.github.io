@@ -11,8 +11,7 @@ interface CalendarDayEventInfoGalleryProps {
 
 export function EventInfoGallery({photos}: CalendarDayEventInfoGalleryProps) {
     const carousel = useRef<AliceCarousel>(null);
-
-    // @ts-ignore
+    
     const renderDotsItem = ({isActive}) => {
         return <div className={`${styles.dot} ${isActive ? styles.active : ""}`}/>
     };

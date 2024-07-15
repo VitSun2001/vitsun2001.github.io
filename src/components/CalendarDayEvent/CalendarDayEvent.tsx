@@ -2,13 +2,13 @@ import styles from './CalendarDayEvent.module.scss'
 import {IconStar} from "../Icons/IconStar.tsx";
 import {IconCircle} from "../Icons/IconCircle.tsx";
 
-interface EventTagProps {
+interface CalendarDayEventProps {
     label: string,
     type: "past" | "future" | "accede" | "created"
     onClick?: () => void
 }
 
-export function CalendarDayEvent({label, type, onClick}: EventTagProps) {
+export function CalendarDayEvent({label, type, onClick}: CalendarDayEventProps) {
 
     const typeStyle = (() => {
         switch (type) {

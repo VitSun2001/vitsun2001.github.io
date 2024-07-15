@@ -45,6 +45,9 @@
     border: none;
     padding: 1.5rem 1rem 0.5rem 1rem;
     flex-grow: 1;
+    resize: none;
+    overflow: auto;
+    scrollbar-width: none;
 
     font-family: TT-Commons, sans-serif;
     font-style: normal;
@@ -85,6 +88,10 @@
     transform: translate(0, 0.875rem) scale(1);
     transform-origin: top left;
     min-width: 0;
+
+    > span{
+      color: $red;
+    }
   }
 
   .errorMessage {

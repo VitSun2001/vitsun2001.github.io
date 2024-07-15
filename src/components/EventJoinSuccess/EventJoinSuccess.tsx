@@ -19,13 +19,21 @@ export function EventJoinSuccess({open, event, onClose}: CalendarDayEventJoinSuc
                 </div>
                 <div>
                     <div className={styles.date}>
-                        <span>пятница</span>
+                        <span className={styles.date}>{new Intl.DateTimeFormat("ru", {
+                            weekday: "long"
+                        }).format(new Date(event.dateStart))}</span>
                         <span className={styles.divider}></span>
-                        <span className={styles.date}>пятница</span>
+                        <span className={styles.date}>{new Intl.DateTimeFormat("ru", {
+                            day: "numeric",
+                            month: "long"
+                        }).format(new Date(event.dateStart))}</span>
                         <span className={styles.divider}></span>
-                        <span className={styles.date}>пятница</span>
+                        <span className={styles.date}>{new Intl.DateTimeFormat("ru", {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }).format(new Date(event.dateStart))}</span>
                     </div>
-                    <h4 className={styles.location}>Ул. Пушкина, дом колотушкина</h4>
+                    <h4 className={styles.location}>{event.location}</h4>
                 </div>
                 <Button color={"black"} onClick={onClose}>Отлично</Button>
             </div>

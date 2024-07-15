@@ -5,7 +5,7 @@ import {IconProps} from "../Icons/IconProps.ts";
 interface InputProps {
     label: string,
     value: string,
-    type: "text" | "password" | "email"
+    type: "text" | "password" | "email" | "textarea"
     name: string,
     placeholder: string,
     disabled?: boolean
@@ -15,6 +15,8 @@ interface InputProps {
     addonOnFocus?: boolean,
     addon?: ReactElement<IconProps>
     onAddonClick?: () => void
+    required?: boolean
+    textAriaHeight?: string
 }
 
 export function Input({
@@ -29,25 +31,39 @@ export function Input({
                           errorMessage,
                           addonOnFocus,
                           addon,
-                          onAddonClick
+                          onAddonClick,
+                          required,
+                          textAriaHeight
                       }: InputProps) {
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onChange?.(event.target.value)
     }
 
-    return <div className={`${styles.labelGroup} ${error ? styles.error : ""}`}>
-        <input
-            className={styles.input}
-            type={type}
-            value={value}
-            name={name}
-            placeholder={placeholder}
-            onChange={handleChange}
-            disabled={disabled}
-        />
-        <label className={styles.label}>{label}</label>
-        <div className={`${styles.addon} ${addonOnFocus ? styles.addonOnFocus : ""}`  } onClick={onAddonClick}>{addon}</div>
+    return <div className={`${styles.labelGroup} ${error ? styles.error : ""}`} style={textAriaHeight ? {height: textAriaHeight} : {}}>
+        {type == "textarea" ? <textarea
+                className={styles.input}
+                value={value}
+                name={name}
+                placeholder={placeholder}
+                onChange={handleChange}
+                disabled={disabled}
+                style={{height: textAriaHeight}}
+            />
+            :
+            <input
+                className={styles.input}
+                type={type}
+                value={value}
+                name={name}
+                placeholder={placeholder}
+                onChange={handleChange}
+                disabled={disabled}
+            />
+        }
+        <label className={styles.label}>{label}{required ? <span>*</span> : ""}</label>
+        <div className={`${styles.addon} ${addonOnFocus ? styles.addonOnFocus : ""}`}
+             onClick={onAddonClick}>{addon}</div>
         <div className={styles.errorMessage}>{errorMessage}</div>
     </div>
 }

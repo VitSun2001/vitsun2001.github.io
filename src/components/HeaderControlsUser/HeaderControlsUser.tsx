@@ -15,7 +15,7 @@ export function HeaderControlsUser() {
                     <Button color={"black"}>
                         <div style={{height: 0, display: "flex", justifyContent: "center", alignContent: "center"}}>
                             <IconPlus size={"1.375rem"}/>
-                        ext</div>
+                        </div>
                         &nbsp;
                     </Button>
                     <Avatar size={"5rem"} imageUrl={""}></Avatar>

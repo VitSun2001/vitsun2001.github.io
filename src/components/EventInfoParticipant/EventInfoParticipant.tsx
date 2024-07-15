@@ -7,7 +7,7 @@ interface EventInfoParticipant {
     owner?: boolean
 }
 
-export function CalendarDayEventInfoParticipant({username, avatar, owner}: EventInfoParticipant) {
+export function EventInfoParticipant({username, avatar, owner}: EventInfoParticipant) {
     return (
         <div className={styles.container}>
             <Avatar imageUrl={avatar ? avatar : ""} size={"2.5rem"}></Avatar>

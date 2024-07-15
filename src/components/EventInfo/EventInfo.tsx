@@ -4,7 +4,7 @@ import {AuthContext, AuthContextType} from "../../contexts/AuthContext.tsx";
 import {Modal} from "../Modal/Modal.tsx";
 import qs from "qs";
 import axiosInstance from "../../api/axios.ts";
-import {CalendarDayEventInfoParticipant} from "../EventInfoParticipant/EventInfoParticipant.tsx";
+import {EventInfoParticipant} from "../EventInfoParticipant/EventInfoParticipant.tsx";
 import 'react-alice-carousel/lib/alice-carousel.css';
 import {EventInfoGallery} from "../EventInfoGallery/EventInfoGallery.tsx";
 import {Button} from "../Button/Button.tsx";
@@ -162,9 +162,6 @@ export function EventInfo({eventId, open, onClose}: EventInfoProps) {
             })
     }
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     return <>
         <Modal label={event?.title} open={open} onClose={handleClose}>
             {event ?
@@ -210,12 +207,12 @@ export function EventInfo({eventId, open, onClose}: EventInfoProps) {
                         <h4>Участники</h4>
                         <div className={styles.list}>
                             {(event.owner) ?
-                                <CalendarDayEventInfoParticipant username={event.owner.username} owner/>
+                                <EventInfoParticipant username={event.owner.username} owner/>
                                 :
                                 ""
                             }
                             {event.participants.filter(x => x.id != event.owner?.id).map(x =>
-                                <CalendarDayEventInfoParticipant username={x.username}/>)}
+                                <EventInfoParticipant username={x.username}/>)}
                         </div>
                     </div>
                     {event.photos?.length > 0 ?
